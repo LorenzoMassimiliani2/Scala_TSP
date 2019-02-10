@@ -1,5 +1,7 @@
 object Main {
   def main(args: Array[String]): Unit = {
-    var generateData = new GenerateData()
+    val generateData = new GenerateData(1,6)
+    val tsp = new TSP()
+    tsp.main()
   }
 }

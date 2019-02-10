@@ -1,8 +1,6 @@
 import scala.io.Source
 
-object TSP {
-
-
+class TSP {
 
   def reduce(distance:Map[(String, String), Float], oldLb:Float) = {
 
@@ -92,19 +90,18 @@ object TSP {
 
 
 
+  def main(): Unit = {
 
-
-  def main(args: Array[String]): Unit = {
-
-    val filename = "src/main/distancePROVA.csv"
+    val filename = "src/main/data.csv"
     var distance: Map[(String, String), Float] = Map ()   //map (nodo1, nodo2) = costo
     var nodes: Set[String] = Set()
 
-    for (line <- Source.fromFile(filename).getLines) {
-      val elements = line.replace("\"" ,"")split(",")
-      distance += (elements(1), elements(4)) -> elements(2).toFloat
-      nodes += elements(1)
-      nodes += elements(4)
+    for (line <- Source.fromFile(filename).getLines.drop(1)) {
+
+      val elements = line.replace("\"" ,"").split(",")
+      distance += (elements(0)+"-"+elements(1), elements(3)+"-"+elements(4)) -> elements(2).toFloat
+      nodes += elements(0)+"-"+elements(1)
+      nodes += elements(3)+"-"+elements(4)
     }
 
     // prima riduzione della matrice
@@ -123,7 +120,14 @@ object TSP {
 
       // se è stata nella configurazione attuale abbiamo incluso tutti gli archi abbiamo trovato la soluzione ottima
       if(n_archi==nodes.size) {
-        println(lista_archi + " " + lb )
+        val map_archi = lista_archi.toMap
+        var tmp = nodes.head
+        map_archi.foreach(x => {
+          print("("+map_archi(tmp) + ") ")
+          tmp=map_archi(tmp)
+        })
+        print("("+map_archi(tmp) + ") ")
+        println("Cost: "+ lb)
         return
       }
 

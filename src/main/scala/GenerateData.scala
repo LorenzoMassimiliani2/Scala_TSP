@@ -1,12 +1,8 @@
 import java.io.{BufferedWriter, File, FileWriter}
 
-class GenerateData {
+class GenerateData(n_states:Int=10, n_places:Int = 10) {
 
-  /* Genera circa n_states * n_places nodi con (n_states * n_places)^2 archi
-   */
-
-  val n_states = 10
-  val n_places = 10
+  /* Genera circa n_states * n_places nodi con (n_states * n_places)^2 archi */
 
   val file = new File("src/main/data.csv")
   val bw = new BufferedWriter(new FileWriter(file))
