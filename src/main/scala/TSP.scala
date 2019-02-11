@@ -1,8 +1,10 @@
 import scala.io.Source
+import org.apache.log4j.{Level, Logger}
+import org.apache.spark.SparkContext
 
 class TSP {
 
-  def reduce(distance:Map[(String, String), Float], oldLb:Float) = {
+   private def reduce(distance:Map[(String, String), Float], oldLb:Float) = {
 
     var matrix = distance
     var lb = oldLb
@@ -59,7 +61,7 @@ class TSP {
 
   // prende in input la matrice, l'arco da escludere e il vecchio valore del Lb e ritorna
   // il valore ridotto della matrice, il nuovo Lb e l'arco escluso
-  def escludiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float) = {
+  private def escludiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float) = {
     var matrix = distance
 
     if (matrix.contains(arco._1, arco._2)) {
@@ -76,7 +78,7 @@ class TSP {
 
   // prende in input la matrice, l'arco da includere e il vecchio valore del Lb e ritorna
   // il valore ridotto della matrice e il nuovo Lb
-  def includiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float) = {
+  private def includiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float) = {
     var matrix = distance
     val lb = oldLb + matrix(arco)
 
@@ -92,16 +94,24 @@ class TSP {
 
   def main(): Unit = {
 
+    Logger.getLogger("org").setLevel(Level.ERROR)
+    // Create a SparkContext using every core of the local machine
+    val sc = new SparkContext("local[1]", "TSP")
+
+
     val filename = "src/main/data.csv"
     var distance: Map[(String, String), Float] = Map ()   //map (nodo1, nodo2) = costo
     var nodes: Set[String] = Set()
 
-    for (line <- Source.fromFile(filename).getLines.drop(1)) {
+    val data = sc.textFile(filename)
+    val header = data.first()
 
-      val elements = line.replace("\"" ,"").split(",")
-      distance += (elements(0)+"-"+elements(1), elements(3)+"-"+elements(4)) -> elements(2).toFloat
-      nodes += elements(0)+"-"+elements(1)
-      nodes += elements(3)+"-"+elements(4)
+    for (line <- data.collect().filter(x=>x!=header)) {
+        val elements = line.replace("\"", "").split(",")
+        distance += (elements(0) + "-" + elements(1), elements(3) + "-" + elements(4)) -> elements(2).toFloat
+        nodes += elements(0) + "-" + elements(1)
+        nodes += elements(3) + "-" + elements(4)
+
     }
 
     // prima riduzione della matrice
@@ -112,10 +122,10 @@ class TSP {
     L = L :+ (matrix, lb, 0, List())
 
 
-    while (!L.isEmpty) {
+    while (L.nonEmpty) {
 
       // da L si prende la configurazione con il LB più basso
-      val (matrix, lb, n_archi, lista_archi)= L.sortWith(_._2 < _._2)(0)
+      val (matrix, lb, n_archi, lista_archi)= L.sortWith(_._2 < _._2).head
       L = L.drop(1)
 
       // se è stata nella configurazione attuale abbiamo incluso tutti gli archi abbiamo trovato la soluzione ottima
@@ -137,12 +147,12 @@ class TSP {
 
 
       // se il numero di stati è 0 siamo in una configurazione non utilizzabile
-      if(states.size!=0) {
+      if(states.nonEmpty) {
 
         // ordiniamo gli archi per LB
         states = states.sortBy(_._1._2)
         // viene preso l'arco con il LB piu piccolo
-        val ((_, _), arco) = states(states.size-1)
+        val ((_, _), arco) = states.last
 
         // aggiungiamo alla lista le configurazioni date dall'esclusione dell'arco e della sua inclusione
         val ((matrix3, lb3), _) = escludiArco(matrix, arco, lb)
