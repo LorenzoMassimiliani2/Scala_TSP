@@ -104,6 +104,7 @@ class TSP {
     var nodes: Set[String] = Set()
 
     val data = sc.textFile(filename)
+
     val header = data.first()
 
     for (line <- data.collect().filter(x=>x!=header)) {
@@ -111,7 +112,6 @@ class TSP {
         distance += (elements(0) + "-" + elements(1), elements(3) + "-" + elements(4)) -> elements(2).toFloat
         nodes += elements(0) + "-" + elements(1)
         nodes += elements(3) + "-" + elements(4)
-
     }
 
     // prima riduzione della matrice
@@ -119,10 +119,12 @@ class TSP {
 
     // L è una lista che conterrà tutte le configurazioni valutate e inizia con la matrice ridotta
     var L: List[( Map[(String, String), Float], Float, Int, List[(String, String)])] = List()
+    sc.makeRDD(L)
     L = L :+ (matrix, lb, 0, List())
 
 
     while (L.nonEmpty) {
+
 
       // da L si prende la configurazione con il LB più basso
       val (matrix, lb, n_archi, lista_archi)= L.sortWith(_._2 < _._2).head
@@ -130,13 +132,7 @@ class TSP {
 
       // se è stata nella configurazione attuale abbiamo incluso tutti gli archi abbiamo trovato la soluzione ottima
       if(n_archi==nodes.size) {
-        val map_archi = lista_archi.toMap
-        var tmp = nodes.head
-        map_archi.foreach(x => {
-          print("("+map_archi(tmp) + ") ")
-          tmp=map_archi(tmp)
-        })
-        print("("+map_archi(tmp) + ") ")
+        lista_archi.foreach(println(_))
         println("Cost: "+ lb)
         return
       }
