@@ -4,11 +4,14 @@ import org.apache.spark.SparkContext
 
 
 
+
+
+
 class TSP_SPARK extends java.io.Serializable {
 
+
+  val N_CORE = 4
   private var nodes: Set[String] = Set()
-
-
 
 
 
@@ -172,24 +175,34 @@ class TSP_SPARK extends java.io.Serializable {
 
 
     // Create a SparkContext using every core of the local machine
-    val sc = new SparkContext("local[4]", "TSP_SPARK")
+    val sc = new SparkContext("local[" + N_CORE +"]", "TSP_SPARK")
 
     // L è una lista che conterrà tutte le configurazioni valutate e inizia con la matrice ridotta
     val list: List[( Map[(String, String), Float], Float, Int, List[(String, String)])] = List() :+ (matrix, lb, 0, List())
     var rdd = sc.parallelize(list)
 
+
     while (!rdd.isEmpty) {
-      rdd = rdd.flatMap(x => procedure(x._1, x._2, x._3, x._4))
-      val newRdd = rdd.collect()
-      if(newRdd.exists(x=>x._3==nodes.size-1)) {
-          val element =  newRdd.filter(_._3 == nodes.size-1).minBy(_._2)
+      val configs = rdd.collect().sortBy(_._2)
+      val (configs_considered, configs_notConsidered) = configs.splitAt(N_CORE)
+
+      var newRdd =  sc.parallelize(configs_considered)
+      newRdd = newRdd.flatMap(x => procedure(x._1, x._2, x._3, x._4))
+      val results = newRdd.collect()
+
+      if(results.exists(x=>x._3==nodes.size-1)) {
+          val element =  results.filter(_._3 == nodes.size-1).minBy(_._2)
           element._4.foreach(println(_))
           println("Cost: " + element._2)
         return
       }
-      rdd = sc.parallelize(newRdd)
+
+      val new_configs = configs_notConsidered.union(results)
+      rdd = sc.parallelize(new_configs)
     }
-    
+
+
+
   }
 
 }
