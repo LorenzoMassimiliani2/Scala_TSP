@@ -1,0 +1,90 @@
+Abanda CDP,Alexander City city,26.3360059332894
+Abanda CDP,Auburn city,33.5053102261526
+Abanda CDP,Anniston city,43.4079637233342
+Abanda CDP,Bon Air town,47.7040142097995
+Abanda CDP,Alexandria CDP,50.7844925114006
+Abanda CDP,Blue Ridge CDP,55.9878961385289
+Abanda CDP,Ballplay CDP,66.1485346722219
+Abanda CDP,Ashville city,66.9958530075136
+Abanda CDP,Argo town,70.0102451021203
+Alexander City city,Abanda CDP,26.3360059332894
+Alexander City city,Bon Air town,32.1831441531301
+Alexander City city,Blue Ridge CDP,32.9739916134131
+Alexander City city,Auburn city,34.1110324710703
+Alexander City city,Anniston city,52.0700133363784
+Alexander City city,Alexandria CDP,57.990819705792
+Alexander City city,Argo town,62.149499826044
+Alexander City city,Ashville city,65.6993329327098
+Alexander City city,Ballplay CDP,76.0369647580296
+Alexandria CDP,Anniston city,7.46668359138144
+Alexandria CDP,Ballplay CDP,18.3132564882966
+Alexandria CDP,Ashville city,23.0388461570642
+Alexandria CDP,Argo town,36.3250401825757
+Alexandria CDP,Bon Air town,43.4499869746611
+Alexandria CDP,Abanda CDP,50.7844925114006
+Alexandria CDP,Alexander City city,57.990819705792
+Alexandria CDP,Auburn city,83.0916245841202
+Alexandria CDP,Blue Ridge CDP,89.3808323838668
+Anniston city,Alexandria CDP,7.46668359138144
+Anniston city,Ballplay CDP,24.0730060330258
+Anniston city,Ashville city,28.756896175099
+Anniston city,Argo town,39.9495084091261
+Anniston city,Bon Air town,41.2973662713639
+Anniston city,Abanda CDP,43.4079637233342
+Anniston city,Alexander City city,52.0700133363784
+Anniston city,Auburn city,75.9449652685711
+Anniston city,Blue Ridge CDP,84.1000404067425
+Argo town,Ashville city,16.7544471442385
+Argo town,Bon Air town,31.5683465578684
+Argo town,Alexandria CDP,36.3250401825757
+Argo town,Anniston city,39.9495084091261
+Argo town,Ballplay CDP,46.5083621413911
+Argo town,Alexander City city,62.149499826044
+Argo town,Abanda CDP,70.0102451021203
+Argo town,Blue Ridge CDP,84.652158947542
+Argo town,Auburn city,95.1674428984456
+Ashville city,Argo town,16.7544471442385
+Ashville city,Alexandria CDP,23.0388461570642
+Ashville city,Anniston city,28.756896175099
+Ashville city,Ballplay CDP,29.9589281091561
+Ashville city,Bon Air town,40.0009752033027
+Ashville city,Alexander City city,65.6993329327098
+Ashville city,Abanda CDP,66.9958530075136
+Ashville city,Blue Ridge CDP,92.7135114778733
+Ashville city,Auburn city,96.1642327416953
+Auburn city,Abanda CDP,33.5053102261526
+Auburn city,Alexander City city,34.1110324710703
+Auburn city,Blue Ridge CDP,41.0072399948468
+Auburn city,Bon Air town,66.2225698635184
+Auburn city,Anniston city,75.9449652685711
+Auburn city,Alexandria CDP,83.0916245841202
+Auburn city,Argo town,95.1674428984456
+Auburn city,Ashville city,96.1642327416953
+Auburn city,Ballplay CDP,99.3218624410289
+Ballplay CDP,Alexandria CDP,18.3132564882966
+Ballplay CDP,Anniston city,24.0730060330258
+Ballplay CDP,Ashville city,29.9589281091561
+Ballplay CDP,Argo town,46.5083621413911
+Ballplay CDP,Bon Air town,60.8176246018911
+Ballplay CDP,Abanda CDP,66.1485346722219
+Ballplay CDP,Alexander City city,76.0369647580296
+Ballplay CDP,Auburn city,99.3218624410289
+Ballplay CDP,Blue Ridge CDP,107.670524844159
+Blue Ridge CDP,Alexander City city,32.9739916134131
+Blue Ridge CDP,Auburn city,41.0072399948468
+Blue Ridge CDP,Bon Air town,53.3708423652372
+Blue Ridge CDP,Abanda CDP,55.9878961385289
+Blue Ridge CDP,Anniston city,84.1000404067425
+Blue Ridge CDP,Argo town,84.652158947542
+Blue Ridge CDP,Alexandria CDP,89.3808323838668
+Blue Ridge CDP,Ashville city,92.7135114778733
+Blue Ridge CDP,Ballplay CDP,107.670524844159
+Bon Air town,Argo town,31.5683465578684
+Bon Air town,Alexander City city,32.1831441531301
+Bon Air town,Ashville city,40.0009752033027
+Bon Air town,Anniston city,41.2973662713639
+Bon Air town,Alexandria CDP,43.4499869746611
+Bon Air town,Abanda CDP,47.7040142097995
+Bon Air town,Blue Ridge CDP,53.3708423652372
+Bon Air town,Ballplay CDP,60.8176246018911
+Bon Air town,Auburn city,66.2225698635184

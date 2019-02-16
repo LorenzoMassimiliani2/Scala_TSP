@@ -10,7 +10,6 @@ import org.apache.spark.SparkContext
 class TSP_SPARK extends java.io.Serializable {
 
 
-  val N_CORE = 4
   private var nodes: Set[String] = Set()
 
 
@@ -75,29 +74,35 @@ class TSP_SPARK extends java.io.Serializable {
   private def escludiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float) = {
     var matrix = distance
 
-    if (matrix.contains(arco._1, arco._2)) {
-      matrix = matrix.filterKeys(_ != arco)
-    }
+    matrix = matrix.updated((arco._1, arco._2), Int.MaxValue)
 
     (reduce(matrix, oldLb), arco)
   }
 
 
-
-
-
-
   // prende in input la matrice, l'arco da includere e il vecchio valore del Lb e ritorna
   // il valore ridotto della matrice e il nuovo Lb
-  private def includiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float) = {
+  private def includiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float, listaArchi: List[(String, String)] ) = {
     var matrix = distance
-    val lb = oldLb + matrix(arco)
+    val lb = oldLb + matrix(arco._1, arco._2)
 
-    matrix = matrix.filterKeys(_._1 != arco._1)
-    matrix = matrix.filterKeys(_._2 != arco._2)
-    if(matrix.contains((arco._2, arco._1))) matrix -= ((arco._2, arco._1))
+    matrix = matrix.filterKeys(x=> (x._2 != arco._2) && (x._1 != arco._1))
+    if(matrix.contains(arco._2, arco._1)) matrix = matrix.updated((arco._2, arco._1), 100000)
 
-    reduce(matrix, lb)
+    var head = arco._1
+    var map = (arco::listaArchi).toMap
+    var i = 0
+    var cicle = false
+    var node = map(head)
+    while (i<map.size) {
+      if(node==head) cicle = true
+      else node = if( map.contains(node) ) map(node) else node
+      i=i+1
+    }
+
+    if(cicle &&  listaArchi.size < nodes.size-1)    (matrix, -1.toFloat)
+    else reduce(matrix, lb)
+
   }
 
 
@@ -106,12 +111,6 @@ class TSP_SPARK extends java.io.Serializable {
 
   private def procedure(matrix:Map[(String, String), Float], lb:Float, n_archi:Int, lista_archi: List[(String, String)]) = {
 
-
-    if(n_archi==nodes.size) {
-      lista_archi.foreach(println(_))
-      println("Cost: "+ lb)
-      List ((matrix, -1.toFloat,-1, lista_archi), (matrix, -1.toFloat,-1, lista_archi) )
-    }
 
 
     // si calcola il LB generato per l'eslusione di ogni arco
@@ -123,14 +122,18 @@ class TSP_SPARK extends java.io.Serializable {
 
       // ordiniamo gli archi per LB
       states = states.sortBy(_._1._2)
-      // viene preso l'arco con il LB piu piccolo
+      // viene preso l'arco con il LB piu grande
       val ((_, _), arco) = states.last
 
       // aggiungiamo alla lista le configurazioni date dall'esclusione dell'arco e della sua inclusione
       val ((matrix3, lb3), _) = escludiArco(matrix, arco, lb)
-      val (matrix4, lb4) = includiArco(matrix, arco, lb)
+      var (matrix4, lb4) = includiArco(matrix, arco, lb, lista_archi)
 
+      if(n_archi+1 == nodes.size) {
+       matrix4 = matrix4 + (("","")->12)
+      }
       List ((matrix3, lb3, n_archi, lista_archi), (matrix4, lb4, n_archi + 1, arco :: lista_archi))
+
     }
     else
       Nil
@@ -141,32 +144,23 @@ class TSP_SPARK extends java.io.Serializable {
 
 
 
-  def time[R](block: => R): R = {
-    val t0 = System.nanoTime()
-    val result = block    // call-by-name
-    val t1 = System.nanoTime()
-    println("Elapsed time: " + (t1 - t0)/100000 + "ns")
-    result
-  }
+  def main(N_CORE:Int = 1): Unit = {
 
 
 
-
-
-
-  def main(): Unit = {
-
-    val filename = "src/main/data.csv"
+    val filename = "src/main/data/data.csv"
     var distance: Map[(String, String), Float] = Map ()   //map (nodo1, nodo2) = costo
 
     val data =  scala.io.Source.fromFile(filename).getLines()
 
-    for (line <- data.drop(1)) {
+    for (line <- data) {
       val elements = line.replace("\"", "").split(",")
-      distance += (elements(0) + "-" + elements(1), elements(3) + "-" + elements(4)) -> elements(2).toFloat
-      nodes += elements(0) + "-" + elements(1)
-      nodes += elements(3) + "-" + elements(4)
+      distance += (elements(0), elements(1)) -> elements(2).toFloat
+      nodes += elements(0)
+      nodes += elements(1)
     }
+
+
 
     // prima riduzione della matrice
     val(matrix, lb) = reduce(distance, 0)
@@ -184,25 +178,33 @@ class TSP_SPARK extends java.io.Serializable {
 
     while (!rdd.isEmpty) {
       val configs = rdd.collect().sortBy(_._2)
+
       val (configs_considered, configs_notConsidered) = configs.splitAt(N_CORE)
 
       var newRdd =  sc.parallelize(configs_considered)
-      newRdd = newRdd.flatMap(x => procedure(x._1, x._2, x._3, x._4))
+      newRdd = newRdd.flatMap(x => procedure(x._1, x._2, x._3, x._4)).filter(x=>  x._1.nonEmpty).filter(x=>x._2 != -1.toFloat)
       val results = newRdd.collect()
 
-      if(results.exists(x=>x._3==nodes.size-1)) {
-          val element =  results.filter(_._3 == nodes.size-1).minBy(_._2)
-          element._4.foreach(println(_))
-          println("Cost: " + element._2)
+
+      if(results.exists(x=>x._3==nodes.size)) {
+          val element =  results.filter(_._3 == nodes.size).minBy(_._2)
+          val edges = element._4.toMap
+          var head = edges.head._1
+          var i = 0
+           print("PATH: " + head)
+          while (i<nodes.size) {
+            head = edges(head)
+            print(", " + head)
+            i = i + 1
+          }
+          println()
+          println("TOTAL MILES: " + element._2)
         return
       }
 
       val new_configs = configs_notConsidered.union(results)
       rdd = sc.parallelize(new_configs)
     }
-
-
-
   }
 
 }
