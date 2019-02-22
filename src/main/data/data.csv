@@ -7,84 +7,234 @@ Abanda CDP,Blue Ridge CDP,55.9878961385289
 Abanda CDP,Ballplay CDP,66.1485346722219
 Abanda CDP,Ashville city,66.9958530075136
 Abanda CDP,Argo town,70.0102451021203
+Abanda CDP,Attalla city,70.6431714976855
+Abanda CDP,Brook Highland CDP,71.2339040506784
+Abanda CDP,Billingsley town,74.8129353786334
+Abanda CDP,Alabaster city,75.4487092550321
+Abanda CDP,Brantleyville CDP,78.9015322969353
+Abanda CDP,Altoona town,79.3478002242974
+Alabaster city,Brantleyville CDP,3.45290324403104
+Alabaster city,Brook Highland CDP,17.6060458567516
+Alabaster city,Bon Air town,28.81820006922
+Alabaster city,Argo town,37.6893057189142
+Alabaster city,Billingsley town,38.8269523276918
+Alabaster city,Ashville city,53.4276379222024
+Alabaster city,Alexander City city,54.9989626225789
+Alabaster city,Blue Ridge CDP,62.036234124528
+Alabaster city,Altoona town,64.297751729313
+Alabaster city,Alexandria CDP,66.362745699465
+Alabaster city,Anniston city,66.4177333868555
+Alabaster city,Attalla city,66.9043820655052
+Alabaster city,Abanda CDP,75.4487092550321
+Alabaster city,Ballplay CDP,81.1240802089254
+Alabaster city,Auburn city,87.976531159047
 Alexander City city,Abanda CDP,26.3360059332894
 Alexander City city,Bon Air town,32.1831441531301
 Alexander City city,Blue Ridge CDP,32.9739916134131
 Alexander City city,Auburn city,34.1110324710703
+Alexander City city,Billingsley town,48.5095490022582
 Alexander City city,Anniston city,52.0700133363784
+Alexander City city,Alabaster city,54.9989626225789
+Alexander City city,Brook Highland CDP,56.0739053841289
 Alexander City city,Alexandria CDP,57.990819705792
+Alexander City city,Brantleyville CDP,58.3380741165415
 Alexander City city,Argo town,62.149499826044
 Alexander City city,Ashville city,65.6993329327098
+Alexander City city,Attalla city,73.9303598284212
 Alexander City city,Ballplay CDP,76.0369647580296
+Alexander City city,Altoona town,79.7115117959734
 Alexandria CDP,Anniston city,7.46668359138144
 Alexandria CDP,Ballplay CDP,18.3132564882966
+Alexandria CDP,Attalla city,20.6159540980418
 Alexandria CDP,Ashville city,23.0388461570642
+Alexandria CDP,Altoona town,30.9117657208805
 Alexandria CDP,Argo town,36.3250401825757
 Alexandria CDP,Bon Air town,43.4499869746611
 Alexandria CDP,Abanda CDP,50.7844925114006
+Alexandria CDP,Brook Highland CDP,51.5225573921961
 Alexandria CDP,Alexander City city,57.990819705792
+Alexandria CDP,Alabaster city,66.362745699465
+Alexandria CDP,Brantleyville CDP,69.0077035497384
 Alexandria CDP,Auburn city,83.0916245841202
 Alexandria CDP,Blue Ridge CDP,89.3808323838668
+Alexandria CDP,Billingsley town,90.1545907497116
+Altoona town,Attalla city,11.1912493794146
+Altoona town,Ashville city,14.1647253544755
+Altoona town,Argo town,26.6415528749445
+Altoona town,Ballplay CDP,29.0168989847979
+Altoona town,Alexandria CDP,30.9117657208805
+Altoona town,Anniston city,38.0075446440556
+Altoona town,Brook Highland CDP,46.6946168446798
+Altoona town,Bon Air town,53.9168445082669
+Altoona town,Alabaster city,64.297751729313
+Altoona town,Brantleyville CDP,65.654859891577
+Altoona town,Abanda CDP,79.3478002242974
+Altoona town,Alexander City city,79.7115117959734
+Altoona town,Billingsley town,98.0712780154252
+Altoona town,Blue Ridge CDP,106.837968995267
+Altoona town,Auburn city,109.555236901824
 Anniston city,Alexandria CDP,7.46668359138144
 Anniston city,Ballplay CDP,24.0730060330258
+Anniston city,Attalla city,27.9957040244564
 Anniston city,Ashville city,28.756896175099
+Anniston city,Altoona town,38.0075446440556
 Anniston city,Argo town,39.9495084091261
 Anniston city,Bon Air town,41.2973662713639
 Anniston city,Abanda CDP,43.4079637233342
 Anniston city,Alexander City city,52.0700133363784
+Anniston city,Brook Highland CDP,52.8895103671425
+Anniston city,Alabaster city,66.4177333868555
+Anniston city,Brantleyville CDP,69.2908186906908
 Anniston city,Auburn city,75.9449652685711
 Anniston city,Blue Ridge CDP,84.1000404067425
+Anniston city,Billingsley town,87.1785478989864
 Argo town,Ashville city,16.7544471442385
+Argo town,Brook Highland CDP,20.1130307253475
+Argo town,Altoona town,26.6415528749445
+Argo town,Attalla city,30.037842915434
 Argo town,Bon Air town,31.5683465578684
 Argo town,Alexandria CDP,36.3250401825757
+Argo town,Alabaster city,37.6893057189142
+Argo town,Brantleyville CDP,39.1826480822298
 Argo town,Anniston city,39.9495084091261
 Argo town,Ballplay CDP,46.5083621413911
 Argo town,Alexander City city,62.149499826044
 Argo town,Abanda CDP,70.0102451021203
+Argo town,Billingsley town,72.1816234969597
 Argo town,Blue Ridge CDP,84.652158947542
 Argo town,Auburn city,95.1674428984456
+Ashville city,Attalla city,13.492847401366
+Ashville city,Altoona town,14.1647253544755
 Ashville city,Argo town,16.7544471442385
 Ashville city,Alexandria CDP,23.0388461570642
 Ashville city,Anniston city,28.756896175099
 Ashville city,Ballplay CDP,29.9589281091561
+Ashville city,Brook Highland CDP,36.2008193794596
 Ashville city,Bon Air town,40.0009752033027
+Ashville city,Alabaster city,53.4276379222024
+Ashville city,Brantleyville CDP,55.266450823795
 Ashville city,Alexander City city,65.6993329327098
 Ashville city,Abanda CDP,66.9958530075136
+Ashville city,Billingsley town,85.080785102204
 Ashville city,Blue Ridge CDP,92.7135114778733
 Ashville city,Auburn city,96.1642327416953
+Attalla city,Altoona town,11.1912493794146
+Attalla city,Ashville city,13.492847401366
+Attalla city,Ballplay CDP,18.5880460656869
+Attalla city,Alexandria CDP,20.6159540980418
+Attalla city,Anniston city,27.9957040244564
+Attalla city,Argo town,30.037842915434
+Attalla city,Brook Highland CDP,49.6898176537922
+Attalla city,Bon Air town,51.6209673602258
+Attalla city,Alabaster city,66.9043820655052
+Attalla city,Brantleyville CDP,68.7592939297426
+Attalla city,Abanda CDP,70.6431714976855
+Attalla city,Alexander City city,73.9303598284212
+Attalla city,Billingsley town,97.6962066979912
+Attalla city,Auburn city,101.985551901325
+Attalla city,Blue Ridge CDP,102.990374548684
 Auburn city,Abanda CDP,33.5053102261526
 Auburn city,Alexander City city,34.1110324710703
 Auburn city,Blue Ridge CDP,41.0072399948468
 Auburn city,Bon Air town,66.2225698635184
+Auburn city,Billingsley town,71.0892154189333
 Auburn city,Anniston city,75.9449652685711
 Auburn city,Alexandria CDP,83.0916245841202
+Auburn city,Alabaster city,87.976531159047
+Auburn city,Brook Highland CDP,90.1837063618127
+Auburn city,Brantleyville CDP,91.1786299860445
 Auburn city,Argo town,95.1674428984456
 Auburn city,Ashville city,96.1642327416953
 Auburn city,Ballplay CDP,99.3218624410289
+Auburn city,Attalla city,101.985551901325
+Auburn city,Altoona town,109.555236901824
 Ballplay CDP,Alexandria CDP,18.3132564882966
+Ballplay CDP,Attalla city,18.5880460656869
 Ballplay CDP,Anniston city,24.0730060330258
+Ballplay CDP,Altoona town,29.0168989847979
 Ballplay CDP,Ashville city,29.9589281091561
 Ballplay CDP,Argo town,46.5083621413911
 Ballplay CDP,Bon Air town,60.8176246018911
+Ballplay CDP,Brook Highland CDP,64.8243582163871
 Ballplay CDP,Abanda CDP,66.1485346722219
 Ballplay CDP,Alexander City city,76.0369647580296
+Ballplay CDP,Alabaster city,81.1240802089254
+Ballplay CDP,Brantleyville CDP,83.4112845364602
 Ballplay CDP,Auburn city,99.3218624410289
 Ballplay CDP,Blue Ridge CDP,107.670524844159
+Ballplay CDP,Billingsley town,107.732223619501
+Billingsley town,Blue Ridge CDP,32.793710877368
+Billingsley town,Alabaster city,38.8269523276918
+Billingsley town,Brantleyville CDP,39.8874848869164
+Billingsley town,Bon Air town,46.9238065294904
+Billingsley town,Alexander City city,48.5095490022582
+Billingsley town,Brook Highland CDP,54.0275330886053
+Billingsley town,Auburn city,71.0892154189333
+Billingsley town,Argo town,72.1816234969597
+Billingsley town,Abanda CDP,74.8129353786334
+Billingsley town,Ashville city,85.080785102204
+Billingsley town,Anniston city,87.1785478989864
+Billingsley town,Alexandria CDP,90.1545907497116
+Billingsley town,Attalla city,97.6962066979912
+Billingsley town,Altoona town,98.0712780154252
+Billingsley town,Ballplay CDP,107.732223619501
+Blue Ridge CDP,Billingsley town,32.793710877368
 Blue Ridge CDP,Alexander City city,32.9739916134131
 Blue Ridge CDP,Auburn city,41.0072399948468
 Blue Ridge CDP,Bon Air town,53.3708423652372
 Blue Ridge CDP,Abanda CDP,55.9878961385289
+Blue Ridge CDP,Alabaster city,62.036234124528
+Blue Ridge CDP,Brantleyville CDP,64.4314129028315
+Blue Ridge CDP,Brook Highland CDP,71.6144211801766
 Blue Ridge CDP,Anniston city,84.1000404067425
 Blue Ridge CDP,Argo town,84.652158947542
 Blue Ridge CDP,Alexandria CDP,89.3808323838668
 Blue Ridge CDP,Ashville city,92.7135114778733
+Blue Ridge CDP,Attalla city,102.990374548684
+Blue Ridge CDP,Altoona town,106.837968995267
 Blue Ridge CDP,Ballplay CDP,107.670524844159
+Bon Air town,Brook Highland CDP,24.2937607695719
+Bon Air town,Alabaster city,28.81820006922
 Bon Air town,Argo town,31.5683465578684
 Bon Air town,Alexander City city,32.1831441531301
+Bon Air town,Brantleyville CDP,32.2037611783878
 Bon Air town,Ashville city,40.0009752033027
 Bon Air town,Anniston city,41.2973662713639
 Bon Air town,Alexandria CDP,43.4499869746611
+Bon Air town,Billingsley town,46.9238065294904
 Bon Air town,Abanda CDP,47.7040142097995
+Bon Air town,Attalla city,51.6209673602258
 Bon Air town,Blue Ridge CDP,53.3708423652372
+Bon Air town,Altoona town,53.9168445082669
 Bon Air town,Ballplay CDP,60.8176246018911
 Bon Air town,Auburn city,66.2225698635184
+Brantleyville CDP,Alabaster city,3.45290324403104
+Brantleyville CDP,Brook Highland CDP,19.1093256672923
+Brantleyville CDP,Bon Air town,32.2037611783878
+Brantleyville CDP,Argo town,39.1826480822298
+Brantleyville CDP,Billingsley town,39.8874848869164
+Brantleyville CDP,Ashville city,55.266450823795
+Brantleyville CDP,Alexander City city,58.3380741165415
+Brantleyville CDP,Blue Ridge CDP,64.4314129028315
+Brantleyville CDP,Altoona town,65.654859891577
+Brantleyville CDP,Attalla city,68.7592939297426
+Brantleyville CDP,Alexandria CDP,69.0077035497384
+Brantleyville CDP,Anniston city,69.2908186906908
+Brantleyville CDP,Abanda CDP,78.9015322969353
+Brantleyville CDP,Ballplay CDP,83.4112845364602
+Brantleyville CDP,Auburn city,91.1786299860445
+Brook Highland CDP,Alabaster city,17.6060458567516
+Brook Highland CDP,Brantleyville CDP,19.1093256672923
+Brook Highland CDP,Argo town,20.1130307253475
+Brook Highland CDP,Bon Air town,24.2937607695719
+Brook Highland CDP,Ashville city,36.2008193794596
+Brook Highland CDP,Altoona town,46.6946168446798
+Brook Highland CDP,Attalla city,49.6898176537922
+Brook Highland CDP,Alexandria CDP,51.5225573921961
+Brook Highland CDP,Anniston city,52.8895103671425
+Brook Highland CDP,Billingsley town,54.0275330886053
+Brook Highland CDP,Alexander City city,56.0739053841289
+Brook Highland CDP,Ballplay CDP,64.8243582163871
+Brook Highland CDP,Abanda CDP,71.2339040506784
+Brook Highland CDP,Blue Ridge CDP,71.6144211801766
+Brook Highland CDP,Auburn city,90.1837063618127

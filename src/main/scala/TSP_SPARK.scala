@@ -171,8 +171,10 @@ class TSP_SPARK extends java.io.Serializable {
     val list: List[( Map[(String, String), Float], Float, Int, List[(String, String)])] = List() :+ (matrix, lb, 0, List())
     var rdd = sc.parallelize(list)
 
+    var continue = true
+
     // finché la lista che contiene le configurazioni non è vuota
-    while (!rdd.isEmpty) {
+    while (continue) {
 
       // le configurazioni vengono divise in quelle che saranno processate parallelamente (quelle con il LB piu basse)
       // e quelle che veranno ignorate durante questa iterazione
@@ -191,6 +193,7 @@ class TSP_SPARK extends java.io.Serializable {
           val edges = element._4.toMap
           var head = edges.head._1
           var i = 0
+          println()
           print("PATH: " + head)
           while (i<nodes.size) {
               head = edges(head)
@@ -204,6 +207,7 @@ class TSP_SPARK extends java.io.Serializable {
 
       // vengono unite le nuove configurazioni con quelle non ancora esaminate
       val new_configs = configs_notConsidered.union(results)
+      if(new_configs.length==0) continue = false
       rdd = sc.parallelize(new_configs)
 
     }
