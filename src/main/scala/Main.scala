@@ -19,8 +19,8 @@ object Main {
 
   def main(args: Array[String]): Unit = {
 
-    val n_places = if(args.length > 0) args(0).toInt else 14
-    val n_core = if(args.length > 1) args(1).toInt else 1
+    val n_places = if(args.length > 0) args(0).toInt else 16
+    val n_core = if(args.length > 1) args(1).toInt else 2
 
 
     val generateData = new GenerateData2()

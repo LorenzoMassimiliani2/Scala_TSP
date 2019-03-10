@@ -180,12 +180,16 @@ class TSP_SPARK(n_core:Int) extends java.io.Serializable {
       // le configurazioni vengono divise in quelle che saranno processate parallelamente (quelle con il LB piu basse)
       // e quelle che veranno ignorate durante questa iterazione
       val configs = rdd.sortBy(_._2).collect()
+
+
+
       val (configs_considered, configs_notConsidered) = configs.splitAt(n_core)
       var newRdd =  sc.parallelize(configs_considered)
 
 
       // Se sono già stati trovati tutti gli archi è stata trovata la soluzione ottima
-      if(configs.sortBy(x=>x._2).head._3 == nodes.size) {
+      if(configs.exists(x=>x._3==nodes.size )) {
+
         val element =  configs_considered.filter(_._3 == nodes.size).minBy(_._2)
         val edges = element._4.toMap
         var head = edges.head._1
@@ -206,7 +210,6 @@ class TSP_SPARK(n_core:Int) extends java.io.Serializable {
       // Viene applicata la funzione in modo parallelo e vengono eliminate le configurazioni vuote e quelle non ammissibili
       newRdd = newRdd.flatMap(x => findNewConfigs(x._1, x._2, x._3, x._4)).filter(x=>  x._1.nonEmpty).filter(x=>x._2 != -1.toFloat)
       val results = newRdd.collect()
-
 
       // vengono unite le nuove configurazioni con quelle non ancora esaminate
       val new_configs = configs_notConsidered.union(results)
