@@ -1,10 +1,11 @@
 import org.apache.log4j.{Level, Logger}
+import org.apache.spark
 import org.apache.spark.SparkContext
 
 
 
 
-class TSP_SPARK extends java.io.Serializable {
+class TSP_SPARK(n_core:Int) extends java.io.Serializable {
 
 
   private var nodes: Set[String] = Set()
@@ -143,7 +144,7 @@ class TSP_SPARK extends java.io.Serializable {
 
 
 
-  def main(N_CORE:Int = 1): Unit = {
+  def main(): Unit = {
 
     val filename = "src/main/data/data.csv"
     var distance: Map[(String, String), Float] = Map ()   //map (nodo1, nodo2) = costo
@@ -165,7 +166,7 @@ class TSP_SPARK extends java.io.Serializable {
     Logger.getLogger("org").setLevel(Level.ERROR)
 
     // Create a SparkContext using every core of the local machine
-    val sc = new SparkContext("local[" + N_CORE +"]", "TSP_SPARK")
+    val sc = new SparkContext("local[" + n_core +"]", "TSP_SPARK")
 
     // L è una lista che conterrà tutte le configurazioni valutate e inizia con la matrice ridotta
     val list: List[( Map[(String, String), Float], Float, Int, List[(String, String)])] = List() :+ (matrix, lb, 0, List())
@@ -178,32 +179,34 @@ class TSP_SPARK extends java.io.Serializable {
 
       // le configurazioni vengono divise in quelle che saranno processate parallelamente (quelle con il LB piu basse)
       // e quelle che veranno ignorate durante questa iterazione
-
-      val configs = rdd.collect().sortBy(_._2)
-      val (configs_considered, configs_notConsidered) = configs.splitAt(N_CORE)
+      val configs = rdd.sortBy(_._2).collect()
+      val (configs_considered, configs_notConsidered) = configs.splitAt(n_core)
       var newRdd =  sc.parallelize(configs_considered)
+
+
+      // Se sono già stati trovati tutti gli archi è stata trovata la soluzione ottima
+      if(configs.sortBy(x=>x._2).head._3 == nodes.size) {
+        val element =  configs_considered.filter(_._3 == nodes.size).minBy(_._2)
+        val edges = element._4.toMap
+        var head = edges.head._1
+        var i = 0
+        println()
+        print("PATH: " + head)
+        while (i<nodes.size) {
+          head = edges(head)
+          print(", " + head)
+          i = i + 1
+        }
+        println()
+        println("TOTAL MILES: " + element._2)
+        return
+      }
+
 
       // Viene applicata la funzione in modo parallelo e vengono eliminate le configurazioni vuote e quelle non ammissibili
       newRdd = newRdd.flatMap(x => findNewConfigs(x._1, x._2, x._3, x._4)).filter(x=>  x._1.nonEmpty).filter(x=>x._2 != -1.toFloat)
       val results = newRdd.collect()
 
-      // Se sono già stati trovati tutti gli archi è stata trovata la soluzione ottima
-      if(results.exists(x=>x._3==nodes.size)) {
-          val element =  results.filter(_._3 == nodes.size).minBy(_._2)
-          val edges = element._4.toMap
-          var head = edges.head._1
-          var i = 0
-          println()
-          print("PATH: " + head)
-          while (i<nodes.size) {
-              head = edges(head)
-              print(", " + head)
-              i = i + 1
-          }
-          println()
-          println("TOTAL MILES: " + element._2)
-        return
-      }
 
       // vengono unite le nuove configurazioni con quelle non ancora esaminate
       val new_configs = configs_notConsidered.union(results)
