@@ -188,7 +188,7 @@ class TSP_SPARK(n_core:Int) extends java.io.Serializable {
 
 
       // Se sono già stati trovati tutti gli archi è stata trovata la soluzione ottima
-      if(configs.exists(x=>x._3==nodes.size )) {
+      if(configs_considered.exists(x=>x._3==nodes.size )) {
 
         val element =  configs_considered.filter(_._3 == nodes.size).minBy(_._2)
         val edges = element._4.toMap
