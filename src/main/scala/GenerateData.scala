@@ -1,26 +1,45 @@
+
 import java.io.{BufferedWriter, File, FileWriter}
 
-class GenerateData(n_states:Int=10, n_places:Int = 10) {
+  class GenerateData {
 
-  /* Genera circa n_states * n_places nodi con (n_states * n_places)^2 archi */
+    def main(n_places:Int) {
 
-  val file = new File("src/main/data.csv")
-  val bw = new BufferedWriter(new FileWriter(file))
-  bw.write("\"state1\",\"place1\",\"mi_to_place\",\"state2\",\"place2\"\n")
-  for (s1 <- 0 until n_states){
-    for (p1 <- 0 until n_places){
-      for (s2 <- 0 until n_states) {
-        for (p2 <- 0 until n_places) {
-          // Escludo gli archi tra un luogo e se stesso
-          if (s2 != s1 || p2 != p1){
-            bw.write("\"" + s1.toString + "\",\"" + p1.toString + "\",\"" +
-              (scala.util.Random.nextInt(10000) + scala.util.Random.nextDouble).toString +
-              "\",\"" + s2.toString + "\",\"" + p2.toString + "\"\n")
-          }
+      val filename = "src/main/data/dataPlace.csv"
+      val mapfilename = "src/main/data/sf12010placename.csv"
+
+      val dataMap = scala.io.Source.fromFile(mapfilename, "ISO-8859-1").getLines()
+      var mapname:Map[String, String] = Map("1"->"2")
+
+      for (line <-dataMap.drop(1)) {
+        val elements = line.replace("\"", "").split(",")
+        mapname = mapname +  (elements(0)+elements(2) -> elements(3))
+      }
+
+      val data =  scala.io.Source.fromFile(filename).getLines()
+      val file = new File("src/main/data/data.csv")
+      val bw = new BufferedWriter(new FileWriter(file))
+      var places = Set[String]()
+
+      for (line <- data.drop(1)) {
+        val elements = line.replace("\"", "").split(",")
+
+        if (places.contains(elements(0) + elements(1)) && places.contains(elements(3) + elements(4))) {
+          bw.write(mapname(elements(0) + elements(1))+ ","+ mapname(elements(3) + elements(4)) ++","+ elements(2)   + "\n")
+        }
+        else if (places.size < n_places - 1) {
+          places = places + (elements(0) + elements(1))
+          places = places + (elements(3) + elements(4))
+          bw.write(mapname(elements(0) + elements(1))+ ","+ mapname (elements(3) + elements(4)) ++","+ elements(2)+ "\n")
+        }
+        else if (places.size < n_places  && (places.contains(elements(0) + elements(1)) || places.contains(elements(3) + elements(4)))  ) {
+          places = places + (elements(0) + elements(1))
+          places = places + (elements(3) + elements(4))
+          bw.write(mapname(elements(0) + elements(1))+ ","+ mapname(elements(3) + elements(4)) +","+ elements(2)+ "\n")
         }
       }
+      bw.close()
+      return
     }
-  }
-  bw.close()
 
 }
