@@ -3,6 +3,8 @@ import java.io.{BufferedWriter, File, FileWriter}
 
   class GenerateData {
 
+    // funzione che crea un file contenente le distanze tra n_places citta
+
     def main(n_places:Int) {
 
       val filename = "src/main/data/dataPlace.csv"

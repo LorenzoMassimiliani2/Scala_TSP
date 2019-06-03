@@ -11,10 +11,14 @@ class TSP {
 
   var nodes: Set[String] = Set()
 
+
+
+  // funzione che riduce la matrice e calcola il nuovo LB
+  // distance = matrice (nodo-nodo) -> valore dell'arco
+  // oldLb = lower bound prima della riduzione
    private def reduce(distance:Map[(String, String), Float], oldLb:Float) = {
 
     var matrix = distance
-
 
 
     var lb = oldLb
@@ -74,6 +78,8 @@ class TSP {
   private def escludiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float) = {
 
     var matrix = distance
+
+    // Int.MaxValue rappresenta il valore infinito
     matrix = matrix.updated((arco._1, arco._2), Int.MaxValue)
 
     (reduce(matrix, oldLb), arco)
@@ -87,24 +93,41 @@ class TSP {
   // prende in input la matrice, l'arco da includere e il vecchio valore del Lb e ritorna
   // il valore ridotto della matrice e il nuovo Lb
   private def includiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float, listaArchi: List[(String, String)] ) = {
+
     var matrix = distance
+
+    // lb viene aggiornato aggiungendo il costo nel nodo che si vuole includere
     val lb = oldLb + matrix(arco._1, arco._2)
 
+    // si cercano gli archi che non possono essere più parte della soluzione
     matrix = matrix.filterKeys(x=> (x._2 != arco._2) && (x._1 != arco._1))
-    if(matrix.contains(arco._2, arco._1)) matrix = matrix.updated((arco._2, arco._1), 100000)
+
+    // Viene portato a infinito il valore degli archi che devono essere eliminati
+    if(matrix.contains(arco._2, arco._1)) matrix = matrix.updated((arco._2, arco._1), Int.MaxValue)
+
+    // Si guarda se gli archi inclusi formano un ciclo prima che siano stati inclusi tutti i nodi
 
     var head = arco._1
     var map = (arco::listaArchi).toMap
     var i = 0
     var cicle = false
     var node = map(head)
+
     while (i<map.size) {
+
+      // se siamo tornati all'head significa che c'è un ciclo
       if(node==head) cicle = true
+
+      // altrimenti viene aggiornato il valore che itera
       else node = if( map.contains(node) ) map(node) else node
+
       i=i+1
     }
 
+    // indichiamo che abbiamo trovato un ciclo senza aver trovato una soluzione restituendo -1 come LB
     if(cicle &&  listaArchi.size < nodes.size-1)  (matrix, -1.toFloat)
+
+    // altrimenti restituiamo la matrice modificata ridotta
     else reduce(matrix, lb)
   }
 
@@ -118,13 +141,15 @@ class TSP {
   def main(): Unit = {
 
 
-
-
     val filename = "src/main/data/data.csv"
     var distance: Map[(String, String), Float] = Map ()   //map (nodo1, nodo2) = costo
 
     val data =  scala.io.Source.fromFile(filename).getLines()
 
+
+    // a partire dal file contenente le distanze vengono create due variabili
+    // distance: matrice delle distanze nodi-nodi
+    // nodes: lista dei nodi
     for (line <- data) {
       val elements = line.replace("\"", "").split(",")
       distance += (elements(0), elements(1)) -> elements(2).toFloat
@@ -134,16 +159,15 @@ class TSP {
 
     }
 
+
+    // Le distanze tra un nodo e se stesso sono impostate a infinito
+    nodes.foreach(x => {distance += ((x,x) -> Int.MaxValue) })
+
     // prima riduzione della matrice
-    nodes.foreach(x => {distance += ((x,x) -> 10000) })
-
-
-
     val(matrix, lb) = reduce(distance, 0)
 
     // L è una lista che conterrà tutte le configurazioni valutate e inizia con la matrice ridotta
     var L: List[( Map[(String, String), Float], Float, Int, List[(String, String)] )] = List()
-
     L = L :+ (matrix, lb, 0, List())
 
 
