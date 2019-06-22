@@ -3,18 +3,18 @@ import org.apache.spark
 import org.apache.spark.SparkContext
 
 
-
-
 class TSP_SPARK(n_core:Int) extends java.io.Serializable {
 
 
   private var nodes: Set[String] = Set()
 
 
-
-  // funzione che riduce la matrice e calcola il nuovo LB
-  // distance = matrice (nodo-nodo) -> valore dell'arco
-  // oldLb = lower bound prima della riduzione
+  /** Funzione che riduce la matrice e calcola il nuovo LB
+    *
+    * @param distance   matrice (nodo-nodo) -> valore dell'arco
+    * @param oldLb      lower bound prima della riduzione
+    * @return           matrice aggiornata e nuovo lower bound
+    */
   private def reduce(distance:Map[(String, String), Float], oldLb:Float) = {
 
     var matrix = distance
@@ -65,13 +65,13 @@ class TSP_SPARK(n_core:Int) extends java.io.Serializable {
   }
 
 
-
-
-
-
-
-  // prende in input la matrice, l'arco da escludere e il vecchio valore del Lb e ritorna
-  // il valore ridotto della matrice, il nuovo Lb e l'arco escluso
+  /** Funzione per escludere un arco
+    *
+    * @param distance   matrice (nodo-nodo) -> valore dell'arco
+    * @param edge       arco da escludere
+    * @param oldLb      vecchio valore del lower bound
+    * @return           matrice ridotta, nuovo lower bound e arco escluso
+    */
   private def excludeEdge(distance:Map[(String, String), Float], edge: (String, String), oldLb:Float) = {
     var matrix = distance
 
@@ -82,11 +82,14 @@ class TSP_SPARK(n_core:Int) extends java.io.Serializable {
   }
 
 
-
-
-
-  // prende in input la matrice, l'arco da includere e il vecchio valore del Lb e ritorna
-  // il valore ridotto della matrice e il nuovo Lb
+  /** Funzione per includere un arco
+    *
+    * @param distance     matrice (nodo-nodo) -> valore dell'arco
+    * @param edge         arco da includere
+    * @param oldLb        vecchio valore del lower bound
+    * @param listaArchi   lista degli archi già inclusi
+    * @return             matrice ridotta e nuovo lower bound
+    */
   private def includeEdge(distance:Map[(String, String), Float], edge: (String, String), oldLb:Float, listaArchi: List[(String, String)] ) = {
     var matrix = distance
 
@@ -125,14 +128,15 @@ class TSP_SPARK(n_core:Int) extends java.io.Serializable {
   }
 
 
-
-
-  // funzione che verrà eseguita in parallelo e che si occupa di cercare l'arco la cui eslusione massimizza il LB
-  // e trova i due figli: includi arco e escludi arco
-  // matrix: matrice delle distanze nodo-nodo
-  // LB: lower bound di partenza
-  // n_edges: numero di archi inseriti
-  // list_edges: lista di archi già inseriti
+  /** Funzione che viene eseguita in parallelo e che si occupa di cercare l'arco la cui eslusione massimizza il lower bound
+    * e di trovare i due figli: includi arco e escludi arco
+    *
+    * @param matrix       matrice delle distanze nodo-nodo
+    * @param lb           lower bound di partenza
+    * @param n_edges      numero di archi inseriti
+    * @param list_edges   lista di archi già inseriti
+    * @return             due configurazioni date dall'eslusione e dall'inclusione del nodo che massimizza il lower bound
+    */
   private def findNewConfigs(matrix:Map[(String, String), Float], lb:Float, n_edges:Int, list_edges: List[(String, String)]) = {
 
 
@@ -168,11 +172,6 @@ class TSP_SPARK(n_core:Int) extends java.io.Serializable {
   }
 
 
-
-
-
-
-  // funzione principale
   def main(): Unit = {
 
     // file che verrà letto

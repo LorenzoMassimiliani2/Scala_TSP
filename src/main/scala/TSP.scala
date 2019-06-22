@@ -7,16 +7,20 @@ import org.apache.spark.SparkContext
 
 import scala.collection.immutable.HashSet
 
+
 class TSP {
+
 
   var nodes: Set[String] = Set()
 
 
-
-  // funzione che riduce la matrice e calcola il nuovo LB
-  // distance = matrice (nodo-nodo) -> valore dell'arco
-  // oldLb = lower bound prima della riduzione
-   private def reduce(distance:Map[(String, String), Float], oldLb:Float) = {
+  /** Funzione che riduce la matrice e calcola il nuovo LB
+    *
+    * @param distance   matrice (nodo-nodo) -> valore dell'arco
+    * @param oldLb      lower bound prima della riduzione
+    * @return           matrice aggiornata e nuovo lower bound
+    */
+  private def reduce(distance: Map[(String, String), Float], oldLb: Float) = {
 
     var matrix = distance
 
@@ -47,7 +51,7 @@ class TSP {
     // min_col conterrà il valore minimo per ogni colonna della matrice matrix
     val min_col = {
       for {
-        node1 <-  matrix.keySet.unzip._2
+        node1 <- matrix.keySet.unzip._2
       } yield node1 -> matrix.filterKeys(_._2 == node1).values.min
     }.toMap
 
@@ -68,14 +72,14 @@ class TSP {
   }
 
 
-
-
-
-
-
-  // prende in input la matrice, l'arco da escludere e il vecchio valore del Lb e ritorna
-  // il valore ridotto della matrice, il nuovo Lb e l'arco escluso
-  private def escludiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float) = {
+  /** Funzione per escludere un arco
+    *
+    * @param distance   matrice (nodo-nodo) -> valore dell'arco
+    * @param arco       arco da escludere
+    * @param oldLb      vecchio valore del lower bound
+    * @return           matrice ridotta, nuovo lower bound e arco escluso
+    */
+  private def escludiArco(distance: Map[(String, String), Float], arco: (String, String), oldLb: Float) = {
 
     var matrix = distance
 
@@ -86,13 +90,15 @@ class TSP {
   }
 
 
-
-
-
-
-  // prende in input la matrice, l'arco da includere e il vecchio valore del Lb e ritorna
-  // il valore ridotto della matrice e il nuovo Lb
-  private def includiArco(distance:Map[(String, String), Float], arco: (String, String), oldLb:Float, listaArchi: List[(String, String)] ) = {
+  /** Funzione per includere un arco
+    *
+    * @param distance     matrice (nodo-nodo) -> valore dell'arco
+    * @param arco         arco da includere
+    * @param oldLb        vecchio valore del lower bound
+    * @param listaArchi   lista degli archi già inclusi
+    * @return             matrice ridotta e nuovo lower bound
+    */
+  private def includiArco(distance: Map[(String, String), Float], arco: (String, String), oldLb: Float, listaArchi: List[(String, String)]) = {
 
     var matrix = distance
 
@@ -100,51 +106,45 @@ class TSP {
     val lb = oldLb + matrix(arco._1, arco._2)
 
     // si cercano gli archi che non possono essere più parte della soluzione
-    matrix = matrix.filterKeys(x=> (x._2 != arco._2) && (x._1 != arco._1))
+    matrix = matrix.filterKeys(x => (x._2 != arco._2) && (x._1 != arco._1))
 
     // Viene portato a infinito il valore degli archi che devono essere eliminati
-    if(matrix.contains(arco._2, arco._1)) matrix = matrix.updated((arco._2, arco._1), Int.MaxValue)
+    if (matrix.contains(arco._2, arco._1)) matrix = matrix.updated((arco._2, arco._1), Int.MaxValue)
 
     // Si guarda se gli archi inclusi formano un ciclo prima che siano stati inclusi tutti i nodi
 
     var head = arco._1
-    var map = (arco::listaArchi).toMap
+    var map = (arco :: listaArchi).toMap
     var i = 0
     var cicle = false
     var node = map(head)
 
-    while (i<map.size) {
+    while (i < map.size) {
 
       // se siamo tornati all'head significa che c'è un ciclo
-      if(node==head) cicle = true
+      if (node == head) cicle = true
 
       // altrimenti viene aggiornato il valore che itera
-      else node = if( map.contains(node) ) map(node) else node
+      else node = if (map.contains(node)) map(node) else node
 
-      i=i+1
+      i = i + 1
     }
 
     // indichiamo che abbiamo trovato un ciclo senza aver trovato una soluzione restituendo -1 come LB
-    if(cicle &&  listaArchi.size < nodes.size-1)  (matrix, -1.toFloat)
+    if (cicle && listaArchi.size < nodes.size - 1) (matrix, -1.toFloat)
 
     // altrimenti restituiamo la matrice modificata ridotta
     else reduce(matrix, lb)
   }
 
 
-
-
-
-
-
-
   def main(): Unit = {
 
 
     val filename = "src/main/data/data.csv"
-    var distance: Map[(String, String), Float] = Map ()   //map (nodo1, nodo2) = costo
+    var distance: Map[(String, String), Float] = Map() //map (nodo1, nodo2) = costo
 
-    val data =  scala.io.Source.fromFile(filename).getLines()
+    val data = scala.io.Source.fromFile(filename).getLines()
 
 
     // a partire dal file contenente le distanze vengono create due variabili
@@ -155,31 +155,30 @@ class TSP {
       distance += (elements(0), elements(1)) -> elements(2).toFloat
       nodes = nodes + elements(0)
       nodes = nodes + elements(1)
-
-
     }
 
 
     // Le distanze tra un nodo e se stesso sono impostate a infinito
-    nodes.foreach(x => {distance += ((x,x) -> Int.MaxValue) })
+    nodes.foreach(x => {
+      distance += ((x, x) -> Int.MaxValue)
+    })
 
     // prima riduzione della matrice
-    val(matrix, lb) = reduce(distance, 0)
+    val (matrix, lb) = reduce(distance, 0)
 
     // L è una lista che conterrà tutte le configurazioni valutate e inizia con la matrice ridotta
-    var L: List[( Map[(String, String), Float], Float, Int, List[(String, String)] )] = List()
+    var L: List[(Map[(String, String), Float], Float, Int, List[(String, String)])] = List()
     L = L :+ (matrix, lb, 0, List())
 
 
     while (L.nonEmpty) {
 
-
       // da L si prende la configurazione con il LB più basso
-      val (matrix, lb, n_archi, lista_archi)= L.sortWith(_._2 < _._2).head
+      val (matrix, lb, n_archi, lista_archi) = L.sortWith(_._2 < _._2).head
       L = L.drop(1)
 
       // se è stata nella configurazione attuale abbiamo incluso tutti gli archi abbiamo trovato la soluzione ottima
-      if(n_archi==nodes.size) {
+      if (n_archi == nodes.size) {
         lista_archi.foreach(println(_))
         println(matrix)
         println("cost:" + lb)
@@ -187,13 +186,14 @@ class TSP {
       }
 
       // si calcola il LB generato per l'eslusione di ogni arco
-      var states:List[( (Map[(String, String), Float], Float), (String, String))] = List()
-      matrix.foreach(x=> {states = escludiArco(matrix, x._1, lb) :: states})
-
+      var states: List[((Map[(String, String), Float], Float), (String, String))] = List()
+      matrix.foreach(x => {
+        states = escludiArco(matrix, x._1, lb) :: states
+      })
 
 
       // se il numero di stati è 0 siamo in una configurazione non utilizzabile
-      if(states.nonEmpty) {
+      if (states.nonEmpty) {
 
         // ordiniamo gli archi per LB
         states = states.sortBy(_._1._2)
@@ -201,13 +201,12 @@ class TSP {
         val ((_, _), arco) = states.last
 
 
-
         // aggiungiamo alla lista le configurazioni date dall'esclusione dell'arco e della sua inclusione
         var ((matrix3, lb3), _) = escludiArco(matrix, arco, lb)
-        if(lb==lb3) lb3 = lb3
+        if (lb == lb3) lb3 = lb3
         L = L :+ (matrix3, lb3, n_archi, lista_archi)
         val (matrix4, lb4) = includiArco(matrix, arco, lb, lista_archi)
-        if(lb4!= -1.toFloat) L = L :+ (matrix4, lb4, n_archi + 1, arco :: lista_archi)
+        if (lb4 != -1.toFloat) L = L :+ (matrix4, lb4, n_archi + 1, arco :: lista_archi)
 
       }
     }
